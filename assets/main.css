@@ -1,0 +1,9 @@
+body {
+    width: 92%;
+    margin: 21px auto;
+}
+
+#upload-image, #output-image-upload {
+    width: 94%;
+    margin: 0 auto;
+}

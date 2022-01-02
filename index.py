@@ -92,7 +92,7 @@ def parse_image(contents):
                 'Septoria leaf spot', 'Spider mites Two-spotted spider mite',
                 'Squash', 'Strawberry', 'Target Spot', 'Tomato',
                 'Tomato Yellow Leaf Curl Virus', 'Tomato mosaic virus', 'healthy']
-    model = tf.keras.models.load_model('model/best_net_82.hdf5')
+    model = tf.keras.models.load_model('assets/best_net_82.hdf5')
     content_type, content_string = contents.split(",")
     image = b64_to_numpy(content_string)
     image = image.reshape((1, 96, 96, 3))

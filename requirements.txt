@@ -1,0 +1,10 @@
+numpy
+pandas
+tensorflow
+plotly
+dash
+flask
+gunicorn
+base64
+PIL
+io

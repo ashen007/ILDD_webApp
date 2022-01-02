@@ -1,3 +1,4 @@
+import dash
 import base64
 import tensorflow as tf
 import numpy as np
@@ -11,6 +12,11 @@ from PIL import Image
 from app import app
 from app import server
 from io import BytesIO as _BytesIO
+
+app = dash.Dash(__name__,
+                suppress_callback_exceptions=True,
+                external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'],
+                assets_folder='assets/')
 
 app.layout = html.Div([html.Div([
     dcc.Upload(

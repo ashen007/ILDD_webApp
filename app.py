@@ -9,8 +9,8 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 
 from PIL import Image
-from app import app
-from app import server
+# from app import app
+# from app import server
 from io import BytesIO as _BytesIO
 
 app = dash.Dash(__name__,

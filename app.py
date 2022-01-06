@@ -57,7 +57,7 @@ def b64_to_pil(string):
     rgb = Image.new('RGB', im.size)
     rgb.paste(im)
     image = rgb
-    test_image = image.resize((96, 96))
+    test_image = image.resize((56, 56))
 
     return test_image
 
@@ -99,11 +99,25 @@ def parse_image(contents):
                 'Septoria leaf spot', 'Spider mites Two-spotted spider mite',
                 'Squash', 'Strawberry', 'Target Spot', 'Tomato',
                 'Tomato Yellow Leaf Curl Virus', 'Tomato mosaic virus', 'healthy']
-    model = tf.keras.models.load_model('assets/best_net_82.hdf5')
+    # model = tf.keras.models.load_model('assets/best_net_82.hdf5')
+
+    # change to use tensorflow lite model instead of full tensorflow model
+    tflite_model_path = 'assets/VGGNet_BE_WA.tflite'
+    interpreter = tf.lite.Interpreter(model_path=tflite_model_path)
+    interpreter.allocate_tensors()
+
     content_type, content_string = contents.split(",")
     image = b64_to_numpy(content_string)
-    image = image.reshape((1, 96, 96, 3))
-    pred = model.predict(image)
+    image = image.reshape((1, 56, 56, 3))
+
+    # make predictions
+    input_dtl = interpreter.get_input_details()
+    output_dtl = interpreter.get_output_details()
+
+    interpreter.set_tensor(input_dtl[0]['index'], image)
+    interpreter.invoke()
+    pred = interpreter.get_tensor(output_dtl[0]['index'])
+
     p = zip(list(classes_), list(pred[0]))
     p = sorted(list(p), key=lambda z: z[1], reverse=True)[:20]
     temp = pd.DataFrame(data=p, columns=['label', 'prob'])

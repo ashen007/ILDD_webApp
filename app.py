@@ -109,6 +109,7 @@ def parse_image(contents):
     content_type, content_string = contents.split(",")
     image = b64_to_numpy(content_string)
     image = image.reshape((1, 56, 56, 3))
+    image = image.astype('float32')
 
     # make predictions
     input_dtl = interpreter.get_input_details()

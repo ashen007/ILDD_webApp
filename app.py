@@ -17,7 +17,7 @@ app = dash.Dash(__name__,
                 suppress_callback_exceptions=True,
                 external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'],
                 assets_folder='assets/')
-server = app.server 
+server = app.server
 
 app.layout = html.Div([html.Div([
     dcc.Upload(
@@ -57,7 +57,7 @@ def b64_to_pil(string):
     rgb = Image.new('RGB', im.size)
     rgb.paste(im)
     image = rgb
-    test_image = image.resize((56, 56))
+    test_image = image.resize((72, 72))
 
     return test_image
 
@@ -86,29 +86,58 @@ def parse_contents(contents, filename):
 
 
 def parse_image(contents):
-    classes_ = ['Apple', 'Apple scab', 'Bacterial Blight (CBB)', 'Bacterial spot',
-                'Black rot', 'Brown Streak Disease (CBSD)', 'BrownSpot', 'Cassava',
-                'Cedar apple rust', 'Cercospora leaf spot Gray leaf spot',
-                'Cherry (including sour)', 'Common rust', 'Corn (maize)',
-                'Early blight', 'Esca (Black Measles)', 'Grape',
-                'Green Mottle (CGM)', 'Haunglongbing (Citrus greening)', 'Healthy',
-                'Hispa', 'Late blight', 'Leaf Mold',
-                'Leaf blight (Isariopsis Leaf Spot)', 'Leaf scorch', 'LeafBlast',
-                'Mosaic Disease (CMD)', 'Northern Leaf Blight', 'Orange', 'Peach',
-                'Pepper, bell', 'Potato', 'Powdery mildew', 'Rice',
-                'Septoria leaf spot', 'Spider mites Two-spotted spider mite',
-                'Squash', 'Strawberry', 'Target Spot', 'Tomato',
-                'Tomato Yellow Leaf Curl Virus', 'Tomato mosaic virus', 'healthy']
+    classes_ = ['apple, apple scab',
+                'apple, black rot',
+                'apple, cedar apple rust',
+                'apple, healthy',
+                'banana, healthy',
+                'banana, segatoka',
+                'banana, xamthomonas',
+                'cherry, (including sour) healthy',
+                'cherry, (including sour) powdery mildew',
+                'corn, (maize) cercospora leaf spot gray leaf spot',
+                'corn, (maize) common rust',
+                'corn, (maize) healthy',
+                'corn, (maize) northern leaf blight',
+                'grape, black rot',
+                'grape, esca (black measles)',
+                'grape, healthy',
+                'grape, leaf blight (isariopsis leaf spot)',
+                'orange, haunglongbing (citrus greening)',
+                'bell pepper, bacterial spot',
+                'bell pepper, healthy',
+                'potato, early blight',
+                'potato, healthy',
+                'potato, late blight',
+                'rice, brownspot',
+                'rice, healthy',
+                'rice, hispa',
+                'rice, leafblast',
+                'strawberry, healthy',
+                'strawberry, leaf scorch',
+                'tea, leaf blight',
+                'tea, red leaf spot',
+                'tea, red scab',
+                'tomato, bacterial spot',
+                'tomato, early blight',
+                'tomato, healthy',
+                'tomato, late blight',
+                'tomato, leaf mold',
+                'tomato, septoria leaf spot',
+                'tomato, spider mites two-spotted spider mite',
+                'tomato, target spot',
+                'tomato, tomato mosaic virus',
+                'tomato, tomato yellow leaf curl']
     # model = tf.keras.models.load_model('assets/best_net_82.hdf5')
 
     # change to use tensorflow lite model instead of full tensorflow model
-    tflite_model_path = 'assets/VGGNet_BE_WA.tflite'
+    tflite_model_path = 'assets/DeepWideNet_BE_WND.tflite'
     interpreter = tf.lite.Interpreter(model_path=tflite_model_path)
     interpreter.allocate_tensors()
 
     content_type, content_string = contents.split(",")
     image = b64_to_numpy(content_string)
-    image = image.reshape((1, 56, 56, 3))
+    image = image.reshape((1, 72, 72, 3))
     image = image.astype('float32')
 
     # make predictions
